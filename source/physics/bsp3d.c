@@ -19,10 +19,6 @@ enum
 
 #define CLIP_LINE_EPSILON (1.0f / 4096.0f)
 
-/* ---------- macros */
-
-/* ---------- structures */
-
 /* ---------- prototypes */
 
 static long bsp3d_clip_polygon_to_leaves_recursive(
@@ -174,7 +170,7 @@ static long bsp3d_clip_polygon_to_leaves_recursive(
 
 	for (vertex_index = 0; vertex_index < vertex_count; ++vertex_index)
 	{
-		if (!(fabs(plane3d_distance_to_point(plane, &vertices[vertex_index])-0.f) < epsilon))
+		if (!(fabs(plane3d_distance_to_point(plane, &vertices[vertex_index])-0.0f) < epsilon))
 		{
 			break;
 		}
@@ -187,11 +183,14 @@ static long bsp3d_clip_polygon_to_leaves_recursive(
 		real_vector3d n;
 		boolean facing;
 
-		vector_from_points3d(&vertices[0], &vertices[1], &p0p1);
-		vector_from_points3d(&vertices[0], &vertices[2], &p0p2);
-		cross_product3d(&p0p2, &p0p1, &n);
+		// TODO: this is a fake match
+		real_vector3d *edge2 = &p0p2;
 
-		facing = dot_product3d(&n, &plane->n) > 0.f;
+		vector_from_points3d(&vertices[0], &vertices[1], &p0p1);
+		vector_from_points3d(&vertices[0], &vertices[2], edge2);
+		cross_product3d(edge2, &p0p1, &n);
+
+		facing = dot_product3d(&n, &plane->n) > 0.0f;
 
 		clipped_polygons[facing] = vertices;
 		
