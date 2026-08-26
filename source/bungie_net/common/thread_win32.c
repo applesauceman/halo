@@ -22,7 +22,7 @@ static struct mutex mutex_pool[MAXIMUM_MUTEXES];
 
 boolean create_thread(
 	word flags,
-	thread_function function,
+	LPTHREAD_START_ROUTINE function,
 	void *function_input,
 	struct thread **thread_reference)
 {
